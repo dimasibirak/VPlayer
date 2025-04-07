@@ -3,8 +3,8 @@ import { ProgressBar } from './Controls/ProgressBar';
 import { EventEmitter } from '../core/EventEmitter';
 
 export class BottomContainer {
-    private container: HTMLDivElement;
-    private controlsPanel: HTMLDivElement;
+    private readonly container: HTMLDivElement;
+    private readonly controlsPanel: HTMLDivElement;
 
     constructor(emitter: EventEmitter) {
         this.container = document.createElement('div');
@@ -13,7 +13,7 @@ export class BottomContainer {
         this.controlsPanel = document.createElement('div');
         this.controlsPanel.className = 'v-player__controls-panel';
 
-        const progressBarInstance = new ProgressBar();
+        const progressBarInstance = new ProgressBar(emitter);
         this.controlsPanel.appendChild(progressBarInstance.getElement());
 
         const playPauseButton = new PlayPauseButton(emitter);

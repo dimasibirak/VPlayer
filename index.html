@@ -8,7 +8,10 @@
 <div id="player"></div>
 <script type="module">
     import { VPlayer } from './src';
-    new VPlayer('player', './sample-video.mp4');
+    new VPlayer({
+        containerId: 'player',
+        src: './sample-video.mp4',
+    });
 </script>
 </body>
 </html>

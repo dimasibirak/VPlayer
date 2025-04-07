@@ -1,7 +1,7 @@
 import { EventEmitter } from '../core/EventEmitter';
 
 export class VideoContainer {
-    private video: HTMLVideoElement;
+    private readonly video: HTMLVideoElement;
     private emitter: EventEmitter;
 
     constructor(container: HTMLElement, src: string, emitter: EventEmitter) {
@@ -11,13 +11,24 @@ export class VideoContainer {
         this.video.src = src;
         container.appendChild(this.video);
 
-        this.emitter.on('play', () => {
-            this.video.play();
+        this.emitter.on('switchPlaying', () => {
+            if (!this.video.paused) {
+                this.emitter.emit('switchedPlaying', true);
+                this.video.pause();
+            } else {
+                this.emitter.emit('switchedPlaying', false);
+                this.video.play();
+            }
         })
 
-        this.emitter.on('pause', () => {
-            this.video.pause();
+        this.emitter.on('clickProgressBar', (pos) => {
+            this.video.currentTime = pos * this.video.duration;
         })
+
+        this.video.addEventListener('timeupdate', () => {
+            console.log('test')
+            this.emitter.emit('updateProgress', this.video.currentTime, this.video.duration);
+        });
     }
 
     getElement() {
